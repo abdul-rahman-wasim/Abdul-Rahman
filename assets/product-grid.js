@@ -33,7 +33,49 @@ class ProductGridPopup {
     dialog.querySelector('[data-close]').addEventListener('click', () => dialog.close());
     this.inputs.forEach((input) => input.addEventListener('change', () => this.update()));
     this.submit.addEventListener('click', () => this.addToCart());
+    this.setupSelects();
     this.update();
+  }
+
+  setupSelects() {
+    this.selects = [...this.dialog.querySelectorAll('[data-select]')];
+
+    for (const select of this.selects) {
+      const list = select.querySelector('[role="listbox"]');
+      const label = select.querySelector('[data-select-label]');
+      const input = select.querySelector('input');
+
+      select.querySelector('[data-select-trigger]').addEventListener('click', () => {
+        const open = !select.hasAttribute('data-open');
+        this.closeSelects();
+        this.toggleSelect(select, open);
+      });
+
+      for (const option of list.children) {
+        option.addEventListener('click', () => {
+          input.value = option.dataset.value;
+          label.textContent = option.dataset.value;
+          select.setAttribute('data-selected', '');
+          for (const sibling of list.children) sibling.setAttribute('aria-selected', sibling === option);
+          this.toggleSelect(select, false);
+          this.update();
+        });
+      }
+    }
+
+    this.dialog.addEventListener('click', (event) => {
+      if (!event.target.closest('[data-select]')) this.closeSelects();
+    });
+  }
+
+  toggleSelect(select, open) {
+    select.toggleAttribute('data-open', open);
+    select.querySelector('[data-select-trigger]').setAttribute('aria-expanded', open);
+    select.querySelector('[role="listbox"]').hidden = !open;
+  }
+
+  closeSelects() {
+    for (const select of this.selects) this.toggleSelect(select, false);
   }
 
   get selection() {
