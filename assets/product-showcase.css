@@ -292,7 +292,7 @@
 .product-showcase__select-caret {
   position: absolute;
   top: 17px;
-  right: 21px;
+  right: 12px;
   pointer-events: none;
   transition: transform 0.15s ease;
 }
