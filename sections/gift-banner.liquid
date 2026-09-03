@@ -12,7 +12,7 @@
 
 <section
   class="gift-banner"
-  style="--gift-banner-height: {{ section.settings.height }}px; --gift-banner-mobile-ratio: {{ section.settings.mobile_image_ratio }};"
+  style="--gift-banner-height: {{ section.settings.height }}px;"
   {{ section.shopify_attributes }}
 >
   <div class="gift-banner__bar gift-banner__bar--top">
@@ -55,7 +55,10 @@
           widths: '750, 1100, 1500, 2000, 3000'
       }}
     {%- else -%}
-      {{ 'lifestyle-1' | placeholder_svg_tag: 'gift-banner__image' }}
+      <picture class="gift-banner__image">
+        <source media="(max-width: 749px)" srcset="{{ 'gift-banner-art-mobile.svg' | asset_url }}" width="375" height="264">
+        <img src="{{ 'gift-banner-art.svg' | asset_url }}" alt="" width="1440" height="780" loading="eager">
+      </picture>
     {%- endif -%}
 
     <div class="gift-banner__content">
@@ -132,20 +135,7 @@
       "max": 1000,
       "step": 20,
       "unit": "px",
-      "default": 720
-    },
-    {
-      "type": "select",
-      "id": "mobile_image_ratio",
-      "label": "Image ratio on mobile",
-      "options": [
-        { "value": "auto", "label": "Original" },
-        { "value": "3 / 2", "label": "3:2" },
-        { "value": "16 / 9", "label": "16:9" },
-        { "value": "4 / 3", "label": "4:3" },
-        { "value": "1 / 1", "label": "1:1" }
-      ],
-      "default": "3 / 2"
+      "default": 780
     },
     { "type": "header", "content": "Bottom bar" },
     {
