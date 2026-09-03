@@ -80,7 +80,7 @@
 /* Popup */
 .product-grid__dialog {
   width: min(311px, calc(100vw - 2rem));
-  margin: 6rem auto auto;
+  margin: auto;
   padding: 0;
   border: 0;
   background: transparent;
@@ -148,7 +148,12 @@
   line-height: 1.2;
 }
 
+/* NOTE: Figma box is 146x60, so cap at four lines however long the description is */
 .product-grid__description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
   margin: 0;
   font-size: 14px;
   font-weight: 300;
@@ -336,14 +341,14 @@
 }
 
 .product-grid__submit {
+  position: relative;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
-  gap: 8px;
   width: 100%;
   height: 45px;
   margin-top: 51px;
-  padding: 0 31px 0 0;
+  padding: 0;
   border: 0;
   background: var(--pg-ink);
   color: var(--pg-paper);
@@ -353,6 +358,16 @@
   text-transform: uppercase;
   cursor: pointer;
   transition: opacity 0.2s ease;
+}
+
+/* NOTE: 18px offset reproduces the label sitting 9px left of centre in Figma */
+.product-grid__submit [data-submit-text] {
+  margin-right: 18px;
+}
+
+.product-grid__submit svg {
+  position: absolute;
+  right: 31px;
 }
 
 .product-grid__submit:hover {
