@@ -55,7 +55,14 @@
           widths: '750, 1100, 1500, 2000, 3000'
       }}
     {%- else -%}
-      {{ 'lifestyle-1' | placeholder_svg_tag: 'gift-banner__image' }}
+      <img
+        class="gift-banner__image"
+        src="{{ 'gift-banner-art.svg' | asset_url }}"
+        alt=""
+        width="1440"
+        height="780"
+        loading="eager"
+      >
     {%- endif -%}
 
     <div class="gift-banner__content">
