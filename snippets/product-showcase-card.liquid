@@ -2,24 +2,24 @@
   assign card_image = image | default: product.featured_image
 -%}
 
-<div class="product-grid__item" {{ attributes }}>
+<div class="product-showcase__item" {{ attributes }}>
   {%- if card_image != blank -%}
     {{
       card_image
       | image_url: width: 1200
       | image_tag:
-        class: 'product-grid__image',
+        class: 'product-showcase__image',
         loading: 'lazy',
         sizes: '(max-width: 749px) 100vw, 33vw',
         widths: '400, 600, 900, 1200'
     }}
   {%- else -%}
-    {{ 'lifestyle-1' | placeholder_svg_tag: 'product-grid__image' }}
+    {{ 'lifestyle-1' | placeholder_svg_tag: 'product-showcase__image' }}
   {%- endif -%}
 
   {%- if product != blank -%}
     <button
-      class="product-grid__hotspot"
+      class="product-showcase__hotspot"
       type="button"
       aria-haspopup="dialog"
       aria-label="View details — {{ product.title | escape }}"
@@ -29,25 +29,25 @@
       <svg viewBox="0 0 9 9" width="9" height="9" aria-hidden="true" focusable="false"><path d="M4.5 0v9M0 4.5h9" stroke="currentColor" stroke-width="1.5"/></svg>
     </button>
 
-    <dialog class="product-grid__dialog" id="{{ dialog_id }}" data-product-id="{{ product.id }}">
-      <div class="product-grid__card">
-        <button class="product-grid__close" type="button" data-close aria-label="Close">
+    <dialog class="product-showcase__dialog" id="{{ dialog_id }}" data-product-id="{{ product.id }}">
+      <div class="product-showcase__card">
+        <button class="product-showcase__close" type="button" data-close aria-label="Close">
           <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M0 0l12 12M12 0L0 12" stroke="currentColor" stroke-width="1.5"/></svg>
         </button>
 
-        <div class="product-grid__summary">
+        <div class="product-showcase__summary">
           {%- if product.featured_image != blank -%}
             {{
               product.featured_image
               | image_url: width: 400
-              | image_tag: class: 'product-grid__thumb', loading: 'lazy', widths: '200, 300, 400'
+              | image_tag: class: 'product-showcase__thumb', loading: 'lazy', widths: '200, 300, 400'
             }}
           {%- endif -%}
 
-          <div class="product-grid__info">
-            <h3 class="product-grid__title">{{ product.title }}</h3>
-            <p class="product-grid__price" data-price>{{ product.price | money }}</p>
-            <p class="product-grid__description">{{ product.description | strip_html | truncatewords: 18 }}</p>
+          <div class="product-showcase__info">
+            <h3 class="product-showcase__title">{{ product.title }}</h3>
+            <p class="product-showcase__price" data-price>{{ product.price | money }}</p>
+            <p class="product-showcase__description">{{ product.description | strip_html | truncatewords: 18 }}</p>
           </div>
         </div>
 
@@ -59,12 +59,12 @@
             {%- if option_key contains 'colo' -%}{%- assign is_color = true -%}{%- endif -%}
             {%- if pass == 1 and is_color == false -%}{%- continue -%}{%- endif -%}
             {%- if pass == 2 and is_color -%}{%- continue -%}{%- endif -%}
-          <div class="product-grid__option">
-            <span class="product-grid__option-name">{{ option.name }}</span>
+          <div class="product-showcase__option">
+            <span class="product-showcase__option-name">{{ option.name }}</span>
 
             {%- if is_color -%}
               <div
-                class="product-grid__swatches"
+                class="product-showcase__swatches"
                 role="radiogroup"
                 aria-label="{{ option.name | escape }}"
                 style="--count: {{ option.values.size }};"
@@ -76,7 +76,7 @@
                       assign chip = value | downcase | replace: ' ', '' | replace: '/', ''
                     endif
                   -%}
-                  <label class="product-grid__swatch">
+                  <label class="product-showcase__swatch">
                     <input
                       type="radio"
                       name="{{ dialog_id }}-option-{{ forloop.parentloop.index }}"
@@ -84,17 +84,17 @@
                       data-option-index="{{ forloop.parentloop.index }}"
                     >
                     <span
-                      class="product-grid__swatch-chip"
+                      class="product-showcase__swatch-chip"
                       style="--chip: {{ chip }};{% if value.swatch.image %} --chip-image: url({{ value.swatch.image | image_url: width: 40 }});{% endif %}"
                     ></span>
-                    <span class="product-grid__swatch-label">{{ value }}</span>
+                    <span class="product-showcase__swatch-label">{{ value }}</span>
                   </label>
                 {%- endfor -%}
               </div>
             {%- else -%}
-              <div class="product-grid__select" data-select>
+              <div class="product-showcase__select" data-select>
                 <button
-                  class="product-grid__select-trigger"
+                  class="product-showcase__select-trigger"
                   type="button"
                   data-select-trigger
                   aria-haspopup="listbox"
@@ -102,10 +102,10 @@
                 >
                   <span data-select-label>Choose your {{ option.name | downcase }}</span>
                 </button>
-                <svg class="product-grid__select-caret" viewBox="0 0 12 6" width="12" height="6" fill="none" aria-hidden="true" focusable="false"><path d="M0.5 0.5L6 5.5l5.5-5" stroke="currentColor" stroke-width="1.5"/></svg>
-                <ul class="product-grid__select-list" role="listbox" aria-label="{{ option.name | escape }}" hidden>
+                <svg class="product-showcase__select-caret" viewBox="0 0 12 6" width="12" height="6" fill="none" aria-hidden="true" focusable="false"><path d="M0.5 0.5L6 5.5l5.5-5" stroke="currentColor" stroke-width="1.5"/></svg>
+                <ul class="product-showcase__select-list" role="listbox" aria-label="{{ option.name | escape }}" hidden>
                   {%- for value in option.values -%}
-                    <li class="product-grid__select-option" role="option" aria-selected="false" data-value="{{ value | escape }}">{{ value }}</li>
+                    <li class="product-showcase__select-option" role="option" aria-selected="false" data-value="{{ value | escape }}">{{ value }}</li>
                   {%- endfor -%}
                 </ul>
                 <input type="hidden" data-option-index="{{ forloop.index }}" value="">
@@ -115,9 +115,9 @@
           {%- endfor -%}
         {%- endfor -%}
 
-        <p class="product-grid__error" data-error hidden></p>
+        <p class="product-showcase__error" data-error hidden></p>
 
-        <button class="product-grid__submit" type="button" data-submit>
+        <button class="product-showcase__submit" type="button" data-submit>
           <span data-submit-text>ADD TO CART</span>
           <svg viewBox="0 0 34 12" width="34" height="12" fill="none" aria-hidden="true" focusable="false"><path d="M0 6h32M27 1l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
         </button>

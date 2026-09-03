@@ -1,7 +1,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&family=Lustria&display=swap">
-{{ 'product-grid.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'product-grid.js' | asset_url }}" type="module" fetchpriority="low"></script>
+{{ 'product-showcase.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-showcase.js' | asset_url }}" type="module" fetchpriority="low"></script>
 
 {%- liquid
   assign auto_add = section.settings.auto_add_product
@@ -34,23 +34,23 @@
 -%}
 
 <section
-  class="product-grid"
+  class="product-showcase"
   data-auto-add-id="{{ auto_add_id }}"
   data-auto-add-options="{{ section.settings.auto_add_trigger | escape }}"
   {{ section.shopify_attributes }}
 >
   {%- if section.settings.heading != blank -%}
-    <h2 class="product-grid__heading">{{ section.settings.heading }}</h2>
+    <h2 class="product-showcase__heading">{{ section.settings.heading }}</h2>
   {%- endif -%}
 
-  <div class="product-grid__grid">
+  <div class="product-showcase__grid">
     {%- if has_picked_product -%}
       {%- for block in section.blocks -%}
         {%- if block.settings.product == blank -%}
           {%- continue -%}
         {%- endif -%}
         {%- assign dialog_id = 'pg-' | append: section.id | append: '-' | append: block.id -%}
-        {%- render 'product-grid-card',
+        {%- render 'product-showcase-card',
           product: block.settings.product,
           image: block.settings.image,
           hotspot_x: block.settings.hotspot_x,
@@ -65,7 +65,7 @@
           assign position = forloop.index0 | modulo: 6
           assign dialog_id = 'pg-' | append: section.id | append: '-' | append: product.id
         -%}
-        {%- render 'product-grid-card',
+        {%- render 'product-showcase-card',
           product: product,
           hotspot_x: hotspots_x[position],
           hotspot_y: hotspots_y[position],

@@ -70,7 +70,7 @@ class ProductGridPopup {
   }
 
   setupSwatches() {
-    for (const group of this.dialog.querySelectorAll('.product-grid__swatches')) {
+    for (const group of this.dialog.querySelectorAll('.product-showcase__swatches')) {
       const inputs = [...group.querySelectorAll('input')];
       const move = () => {
         const index = inputs.findIndex((input) => input.checked);
@@ -161,7 +161,7 @@ class ProductGridPopup {
         cart: CartLinesUpdateEvent.createCartFromAjaxResponse(cart),
         detail: {
           items: cart.items,
-          source: 'product-grid',
+          source: 'product-showcase',
           sourceId: this.dialog.id,
           itemCount: items.length,
           productId: this.dialog.dataset.productId,
@@ -180,8 +180,8 @@ class ProductGridPopup {
   }
 }
 
-for (const section of document.querySelectorAll('.product-grid')) {
-  for (const dialog of section.querySelectorAll('.product-grid__dialog')) {
+for (const section of document.querySelectorAll('.product-showcase')) {
+  for (const dialog of section.querySelectorAll('.product-showcase__dialog')) {
     new ProductGridPopup(dialog, section);
   }
 
