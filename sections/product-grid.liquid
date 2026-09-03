@@ -1,5 +1,5 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&family=Lustria&display=swap">
 {{ 'product-grid.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'product-grid.js' | asset_url }}" type="module" fetchpriority="low"></script>
 
@@ -16,8 +16,8 @@
     endif
   endfor
 
-  assign hotspots_x = '55,82,60,72,50,70' | split: ','
-  assign hotspots_y = '58,52,20,18,26,42' | split: ','
+  assign hotspots_x = '61.8,84.6,62.8,72.2,51.6,76.3' | split: ','
+  assign hotspots_y = '56.1,52.5,20.9,18.5,25.9,39.4' | split: ','
 
   assign auto_products = collections.all.products
   if section.settings.collection != blank

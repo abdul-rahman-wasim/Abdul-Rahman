@@ -3,8 +3,11 @@
   --pg-paper: #fff;
   --pg-line: #d9d9d9;
   --pg-font: 'Jost', sans-serif;
+  --pg-heading-font: 'Lustria', 'Times New Roman', serif;
 
-  padding: 3.5rem 3.5rem 5rem;
+  max-width: 1379px;
+  margin-inline: auto;
+  padding: 3.5rem 1.25rem 5rem;
   background: var(--pg-paper);
   color: var(--pg-ink);
   font-family: var(--pg-font);
@@ -17,10 +20,12 @@
 }
 
 .product-grid__heading {
-  margin: 0 0 2.25rem;
-  font-size: 2.25rem;
+  margin: 0 0 1.875rem;
+  font-family: var(--pg-heading-font);
+  font-size: clamp(1.5rem, 2.7vw, 2.25rem);
   font-weight: 400;
-  line-height: 1.1;
+  line-height: 1.2;
+  letter-spacing: 0;
 }
 
 .product-grid__grid {
@@ -31,7 +36,7 @@
 
 .product-grid__item {
   position: relative;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 433 / 444;
   overflow: hidden;
 }
 
@@ -49,15 +54,14 @@
   transform: translate(-50%, -50%);
   display: grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
+  width: 22px;
+  height: 22px;
   padding: 0;
   border: 0;
   border-radius: 50%;
-  background: var(--pg-paper);
+  background: rgb(248 248 248 / 90%);
   color: var(--pg-ink);
   cursor: pointer;
-  box-shadow: 0 1px 6px rgb(0 0 0 / 25%);
   transition: transform 0.2s ease;
 }
 
@@ -127,7 +131,7 @@
 
 .product-grid__price {
   margin: 0 0 0.5rem;
-  font-size: 1.0625rem;
+  font-size: 1.125rem;
   font-weight: 400;
 }
 
