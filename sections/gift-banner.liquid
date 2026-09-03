@@ -55,14 +55,10 @@
           widths: '750, 1100, 1500, 2000, 3000'
       }}
     {%- else -%}
-      <img
-        class="gift-banner__image"
-        src="{{ 'gift-banner-art.svg' | asset_url }}"
-        alt=""
-        width="1440"
-        height="780"
-        loading="eager"
-      >
+      <picture class="gift-banner__image">
+        <source media="(max-width: 749px)" srcset="{{ 'gift-banner-art-mobile.svg' | asset_url }}" width="375" height="264">
+        <img src="{{ 'gift-banner-art.svg' | asset_url }}" alt="" width="1440" height="780" loading="eager">
+      </picture>
     {%- endif -%}
 
     <div class="gift-banner__content">

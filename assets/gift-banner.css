@@ -84,6 +84,12 @@
   object-fit: cover;
 }
 
+.gift-banner__image > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .gift-banner__content {
   grid-area: 1 / 1;
   align-self: end;
@@ -263,13 +269,14 @@
     text-align: center;
   }
 
-  /* NOTE: art is 686px on a 375px frame, so it bleeds past both edges */
+  /* NOTE: the mobile export is already cropped to the frame, so no bleed here */
   .gift-banner__image {
     grid-area: 2 / 1;
-    width: 182.93%;
     height: auto;
-    margin-left: -37.33%;
-    aspect-ratio: 686 / 264;
+  }
+
+  .gift-banner__image > img {
+    height: auto;
   }
 
   .gift-banner__body--desktop {
