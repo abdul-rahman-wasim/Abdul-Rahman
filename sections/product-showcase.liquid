@@ -6,7 +6,7 @@
 {%- liquid
   assign auto_add = section.settings.auto_add_product
   if auto_add == blank
-    assign auto_add = all_products['soft-winter-jacket']
+    assign auto_add = all_products['dark-winter-jacket']
   endif
   assign auto_add_id = ''
   for variant in auto_add.variants
@@ -93,14 +93,14 @@
       "type": "product",
       "id": "auto_add_product",
       "label": "Auto-added product",
-      "info": "Falls back to the product with handle soft-winter-jacket."
+      "info": "Falls back to the product with handle dark-winter-jacket."
     },
     {
       "type": "text",
       "id": "auto_add_trigger",
       "label": "Trigger option values",
       "info": "Comma separated. Added automatically when all of these values are selected.",
-      "default": "Black, Medium"
+      "default": "Black, M"
     }
   ],
   "blocks": [

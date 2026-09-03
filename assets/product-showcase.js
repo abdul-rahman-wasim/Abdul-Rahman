@@ -14,6 +14,14 @@ async function refreshCart() {
   );
 }
 
+function post(items) {
+  return fetch(Theme.routes.cart_add_url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify({ items, sections: sectionIds() }),
+  }).then((response) => response.json());
+}
+
 function sectionIds() {
   return [...document.querySelectorAll('cart-items-component[data-section-id]')]
     .map((item) => item.dataset.sectionId)
@@ -29,6 +37,7 @@ class ProductGridPopup {
     this.price = dialog.querySelector('[data-price]');
     this.error = dialog.querySelector('[data-error]');
     this.submit = dialog.querySelector('[data-submit]');
+    this.submitText = dialog.querySelector('[data-submit-text]');
 
     dialog.querySelector('[data-close]').addEventListener('click', () => dialog.close());
     this.inputs.forEach((input) => input.addEventListener('change', () => this.update()));
@@ -111,6 +120,7 @@ class ProductGridPopup {
     const variant = this.variant;
     if (variant) this.price.innerHTML = variant.price;
     this.submit.disabled = !variant?.available;
+    this.submitText.textContent = variant && !variant.available ? 'SOLD OUT' : 'ADD TO CART';
     this.error.hidden = true;
   }
 
@@ -135,6 +145,7 @@ class ProductGridPopup {
     if (autoAddId) items.push({ id: Number(autoAddId), quantity: 1 });
 
     this.submit.disabled = true;
+    this.submitText.textContent = 'ADDING…';
     const deferred = CartLinesUpdateEvent.createPromise();
 
     this.dialog.dispatchEvent(
@@ -147,13 +158,11 @@ class ProductGridPopup {
     );
 
     try {
-      const response = await fetch(Theme.routes.cart_add_url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ items, sections: sectionIds() }),
-      });
-      const data = await response.json();
-
+      let data = await post(items);
+      if (data.status && items.length > 1) {
+        console.warn('[product-showcase] gift line rejected:', data.description || data.message);
+        data = await post([items[0]]);
+      }
       if (data.status) throw new Error(data.description || data.message);
 
       const cart = await refreshCart();
@@ -161,6 +170,7 @@ class ProductGridPopup {
         cart: CartLinesUpdateEvent.createCartFromAjaxResponse(cart),
         detail: {
           items: cart.items,
+          sections: data.sections,
           source: 'product-showcase',
           sourceId: this.dialog.id,
           itemCount: items.length,
@@ -170,12 +180,12 @@ class ProductGridPopup {
       });
 
       this.dialog.close();
+      this.update();
     } catch (error) {
       deferred.reject(error);
+      this.update();
       this.error.textContent = error.message;
       this.error.hidden = false;
-    } finally {
-      this.update();
     }
   }
 }
