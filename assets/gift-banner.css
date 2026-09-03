@@ -1,5 +1,5 @@
 .gift-banner {
-  --gift-banner-accent: #f5f43f;
+  --gift-banner-accent: #fff544;
   --gift-banner-ink: #000;
   --gift-banner-paper: #fff;
   --gift-banner-bar: #f4f4f4;
@@ -155,9 +155,20 @@
 .gift-banner__btn--accent {
   justify-self: end;
   align-self: center;
-  min-width: 14rem;
+  width: 207px;
+  height: 44px;
+  padding: 0;
+  gap: 18px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20.63px;
+  letter-spacing: 0;
   background: var(--gift-banner-accent);
   color: var(--gift-banner-ink);
+}
+
+.gift-banner__btn--accent .gift-banner__arrow {
+  width: 24px;
 }
 
 .gift-banner__btn--accent::before {
