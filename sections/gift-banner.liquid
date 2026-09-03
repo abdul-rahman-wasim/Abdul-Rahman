@@ -1,0 +1,150 @@
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap">
+{{ 'gift-banner.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign image = section.settings.background_image
+-%}
+
+{%- capture btn_arrow -%}
+  <svg class="gift-banner__arrow" viewBox="0 0 44 12" width="44" height="12" fill="none" aria-hidden="true" focusable="false"><path d="M0 6h41M36 1l6 5-6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" vector-effect="non-scaling-stroke"/></svg>
+{%- endcapture -%}
+
+<section
+  class="gift-banner"
+  style="--gift-banner-height: {{ section.settings.height }}px;"
+  {{ section.shopify_attributes }}
+>
+  <div class="gift-banner__bar gift-banner__bar--top">
+    <a
+      class="gift-banner__menu"
+      href="{{ section.settings.menu_link | default: routes.root_url }}"
+      aria-label="{{ 'accessibility.menu' | t | default: 'Menu' }}"
+    >
+      <svg viewBox="0 0 24 16" width="26" height="18" fill="none" aria-hidden="true" focusable="false"><path d="M0 1h24M0 8h24M0 15h24" stroke="currentColor" stroke-width="2"/></svg>
+    </a>
+
+    {%- if section.settings.logo_text != blank -%}
+      <span class="gift-banner__logo">{{ section.settings.logo_text }}</span>
+    {%- endif -%}
+
+    {%- if section.settings.announcement != blank -%}
+      <p class="gift-banner__announcement">{{ section.settings.announcement }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.top_button_label != blank -%}
+      <a
+        class="gift-banner__btn gift-banner__btn--accent"
+        href="{{ section.settings.top_button_link | default: '#' }}"
+      >
+        <span>{{ section.settings.top_button_label }}</span>
+        {{ btn_arrow }}
+      </a>
+    {%- endif -%}
+  </div>
+
+  <div class="gift-banner__main">
+    {%- if image != blank -%}
+      {{
+        image
+        | image_url: width: 3000
+        | image_tag:
+          class: 'gift-banner__image',
+          loading: 'eager',
+          sizes: '100vw',
+          widths: '750, 1100, 1500, 2000, 3000'
+      }}
+    {%- else -%}
+      <picture class="gift-banner__image">
+        <source media="(max-width: 749px)" srcset="{{ 'gift-banner-art-mobile.svg' | asset_url }}" width="375" height="264">
+        <img src="{{ 'gift-banner-art.svg' | asset_url }}" alt="" width="1440" height="780" loading="eager">
+      </picture>
+    {%- endif -%}
+
+    <div class="gift-banner__content">
+      <div class="gift-banner__text">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="gift-banner__heading">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.body_mobile != blank -%}
+          <div class="gift-banner__body gift-banner__body--desktop">{{ section.settings.body }}</div>
+          <div class="gift-banner__body gift-banner__body--mobile">{{ section.settings.body_mobile }}</div>
+        {%- elsif section.settings.body != blank -%}
+          <div class="gift-banner__body">{{ section.settings.body }}</div>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.button_label != blank -%}
+        <a
+          class="gift-banner__btn gift-banner__btn--solid"
+          href="{{ section.settings.button_link | default: '#' }}"
+        >
+          <span>{{ section.settings.button_label }}</span>
+          {{ btn_arrow }}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- if section.settings.footer_text != blank -%}
+    <div class="gift-banner__bar gift-banner__bar--bottom">
+      <p class="gift-banner__footer-text">{{ section.settings.footer_text }}</p>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Gift banner",
+  "settings": [
+    { "type": "header", "content": "Top bar" },
+    { "type": "text", "id": "logo_text", "label": "Logo text", "default": "TISSO VISON" },
+    { "type": "url", "id": "menu_link", "label": "Menu link (mobile)" },
+    {
+      "type": "text",
+      "id": "announcement",
+      "label": "Announcement",
+      "default": "Find the ideal gift for your loved ones."
+    },
+    { "type": "text", "id": "top_button_label", "label": "Top button label", "default": "Choose gift" },
+    { "type": "url", "id": "top_button_link", "label": "Top button link" },
+    { "type": "header", "content": "Banner" },
+    { "type": "image_picker", "id": "background_image", "label": "Background image" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "The Gift Guide" },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Body",
+      "default": "<p>Discover Joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "body_mobile",
+      "label": "Body on mobile",
+      "info": "Falls back to Body when empty.",
+      "default": "<p>Discover Joy: Your Ultimate Holiday Gift Destination.</p>"
+    },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop now" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    {
+      "type": "range",
+      "id": "height",
+      "label": "Height",
+      "min": 400,
+      "max": 1000,
+      "step": 20,
+      "unit": "px",
+      "default": 780
+    },
+    { "type": "header", "content": "Bottom bar" },
+    {
+      "type": "text",
+      "id": "footer_text",
+      "label": "Bottom bar text",
+      "default": "Sustainable, ethically made clothes in sizes XXS to 6XL"
+    }
+  ],
+  "presets": [{ "name": "Gift banner" }]
+}
+{% endschema %}

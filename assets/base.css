@@ -21,7 +21,7 @@ body {
 html {
   /* Firefox */
   scrollbar-width: thin;
-  scrollbar-color: rgb(var(--color-foreground-rgb) / var(--opacity-40)) var(--color-background);
+  scrollbar-color: rgb(var(--color-foreground-rgb) / var(--opacity-40)) rgb(var(--color-foreground-rgb) / var(--opacity-10));
   scroll-behavior: smooth;
 }
 
@@ -51,7 +51,7 @@ html[scroll-lock] .page-wrapper {
     overflow-y: auto;
     scroll-behavior: smooth;
     scrollbar-width: thin;
-    scrollbar-color: rgb(var(--color-foreground-rgb) / var(--opacity-40)) var(--color-background);
+    scrollbar-color: rgb(var(--color-foreground-rgb) / var(--opacity-40)) rgb(var(--color-foreground-rgb) / var(--opacity-10));
   }
 
   .page-wrapper--drawer-open shopify-account::part(dialog) {
