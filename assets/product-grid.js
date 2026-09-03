@@ -34,6 +34,7 @@ class ProductGridPopup {
     this.inputs.forEach((input) => input.addEventListener('change', () => this.update()));
     this.submit.addEventListener('click', () => this.addToCart());
     this.setupSelects();
+    this.setupSwatches();
     this.update();
   }
 
@@ -66,6 +67,19 @@ class ProductGridPopup {
     this.dialog.addEventListener('click', (event) => {
       if (!event.target.closest('[data-select]')) this.closeSelects();
     });
+  }
+
+  setupSwatches() {
+    for (const group of this.dialog.querySelectorAll('.product-grid__swatches')) {
+      const inputs = [...group.querySelectorAll('input')];
+      const move = () => {
+        const index = inputs.findIndex((input) => input.checked);
+        if (index >= 0) group.style.setProperty('--active', index);
+      };
+
+      for (const input of inputs) input.addEventListener('change', move);
+      move();
+    }
   }
 
   toggleSelect(select, open) {

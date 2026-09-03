@@ -51,23 +51,42 @@
           </div>
         </div>
 
-        {%- for option in product.options_with_values -%}
-          {%- assign option_key = option.name | downcase -%}
+        {%- comment -%} NOTE: two passes so colour options always render before the rest {%- endcomment -%}
+        {%- for pass in (1..2) -%}
+          {%- for option in product.options_with_values -%}
+            {%- assign option_key = option.name | downcase -%}
+            {%- assign is_color = false -%}
+            {%- if option_key contains 'colo' -%}{%- assign is_color = true -%}{%- endif -%}
+            {%- if pass == 1 and is_color == false -%}{%- continue -%}{%- endif -%}
+            {%- if pass == 2 and is_color -%}{%- continue -%}{%- endif -%}
           <div class="product-grid__option">
             <span class="product-grid__option-name">{{ option.name }}</span>
 
-            {%- if option_key contains 'colo' -%}
-              <div class="product-grid__swatches" role="radiogroup" aria-label="{{ option.name | escape }}">
+            {%- if is_color -%}
+              <div
+                class="product-grid__swatches"
+                role="radiogroup"
+                aria-label="{{ option.name | escape }}"
+                style="--count: {{ option.values.size }};"
+              >
                 {%- for value in option.values -%}
+                  {%- liquid
+                    assign chip = value.swatch.color
+                    if chip == blank
+                      assign chip = value | downcase | replace: ' ', '' | replace: '/', ''
+                    endif
+                  -%}
                   <label class="product-grid__swatch">
                     <input
                       type="radio"
                       name="{{ dialog_id }}-option-{{ forloop.parentloop.index }}"
                       value="{{ value | escape }}"
                       data-option-index="{{ forloop.parentloop.index }}"
-                      {% if forloop.first %}checked{% endif %}
                     >
-                    <span class="product-grid__swatch-chip" style="--chip: {% if value.swatch.color %}{{ value.swatch.color }}{% else %}{{ value | downcase }}{% endif %};"></span>
+                    <span
+                      class="product-grid__swatch-chip"
+                      style="--chip: {{ chip }};{% if value.swatch.image %} --chip-image: url({{ value.swatch.image | image_url: width: 40 }});{% endif %}"
+                    ></span>
                     <span class="product-grid__swatch-label">{{ value }}</span>
                   </label>
                 {%- endfor -%}
@@ -93,6 +112,7 @@
               </div>
             {%- endif -%}
           </div>
+          {%- endfor -%}
         {%- endfor -%}
 
         <p class="product-grid__error" data-error hidden></p>
