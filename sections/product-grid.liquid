@@ -1,0 +1,138 @@
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap">
+{{ 'product-grid.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-grid.js' | asset_url }}" type="module" fetchpriority="low"></script>
+
+{%- liquid
+  assign auto_add = section.settings.auto_add_product
+  if auto_add == blank
+    assign auto_add = all_products['soft-winter-jacket']
+  endif
+  assign auto_add_id = ''
+  for variant in auto_add.variants
+    if variant.available
+      assign auto_add_id = variant.id
+      break
+    endif
+  endfor
+
+  assign hotspots_x = '55,82,60,72,50,70' | split: ','
+  assign hotspots_y = '58,52,20,18,26,42' | split: ','
+
+  assign auto_products = collections.all.products
+  if section.settings.collection != blank
+    assign auto_products = section.settings.collection.products
+  endif
+
+  assign has_picked_product = false
+  for block in section.blocks
+    if block.settings.product != blank
+      assign has_picked_product = true
+      break
+    endif
+  endfor
+-%}
+
+<section
+  class="product-grid"
+  data-auto-add-id="{{ auto_add_id }}"
+  data-auto-add-options="{{ section.settings.auto_add_trigger | escape }}"
+  {{ section.shopify_attributes }}
+>
+  {%- if section.settings.heading != blank -%}
+    <h2 class="product-grid__heading">{{ section.settings.heading }}</h2>
+  {%- endif -%}
+
+  <div class="product-grid__grid">
+    {%- if has_picked_product -%}
+      {%- for block in section.blocks -%}
+        {%- if block.settings.product == blank -%}
+          {%- continue -%}
+        {%- endif -%}
+        {%- assign dialog_id = 'pg-' | append: section.id | append: '-' | append: block.id -%}
+        {%- render 'product-grid-card',
+          product: block.settings.product,
+          image: block.settings.image,
+          hotspot_x: block.settings.hotspot_x,
+          hotspot_y: block.settings.hotspot_y,
+          dialog_id: dialog_id,
+          attributes: block.shopify_attributes
+        -%}
+      {%- endfor -%}
+    {%- else -%}
+      {%- for product in auto_products limit: 6 -%}
+        {%- liquid
+          assign position = forloop.index0 | modulo: 6
+          assign dialog_id = 'pg-' | append: section.id | append: '-' | append: product.id
+        -%}
+        {%- render 'product-grid-card',
+          product: product,
+          hotspot_x: hotspots_x[position],
+          hotspot_y: hotspots_y[position],
+          dialog_id: dialog_id
+        -%}
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product grid",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Tisso vison in the wild" },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection",
+      "info": "First 6 products are shown. Falls back to all products. Ignored when Product blocks are added."
+    },
+    { "type": "header", "content": "Automatic gift" },
+    {
+      "type": "product",
+      "id": "auto_add_product",
+      "label": "Auto-added product",
+      "info": "Falls back to the product with handle soft-winter-jacket."
+    },
+    {
+      "type": "text",
+      "id": "auto_add_trigger",
+      "label": "Trigger option values",
+      "info": "Comma separated. Added automatically when all of these values are selected.",
+      "default": "Black, Medium"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product" },
+        { "type": "image_picker", "id": "image", "label": "Image", "info": "Falls back to the product image." },
+        {
+          "type": "range",
+          "id": "hotspot_x",
+          "label": "Hotspot X",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "hotspot_y",
+          "label": "Hotspot Y",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 50
+        }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Product grid" }]
+}
+{% endschema %}
