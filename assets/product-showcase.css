@@ -399,12 +399,30 @@
 
 @media (max-width: 749px) {
   .product-showcase {
-    padding: 2rem 1.25rem 3rem;
+    padding: 2rem 1rem 3rem;
+  }
+
+  .product-showcase__heading {
+    margin-bottom: 20px;
   }
 
   .product-showcase__grid {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4px;
+  }
+
+  .product-showcase__item {
+    aspect-ratio: 169 / 186.42;
+  }
+
+  .product-showcase__hotspot {
+    width: 15.71px;
+    height: 15.71px;
+  }
+
+  .product-showcase__hotspot svg {
+    width: 6.4px;
+    height: 6.4px;
   }
 
   .product-showcase__dialog {
