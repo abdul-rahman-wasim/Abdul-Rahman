@@ -30,10 +30,13 @@
 .product-showcase__heading {
   margin: 0 0 1.875rem;
   font-family: var(--pg-heading-font);
+  font-style: normal;
   font-size: clamp(1.5rem, 2.7vw, 2.25rem);
   font-weight: 400;
   line-height: 1.2;
   letter-spacing: 0;
+  text-transform: none;
+  color: var(--pg-ink);
 }
 
 .product-showcase__grid {
@@ -134,10 +137,19 @@
 }
 
 .product-showcase__title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
   margin: 0 0 20px;
+  font-family: var(--pg-font);
+  font-style: normal;
   font-size: 16px;
   font-weight: 300;
   line-height: 1.2;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--pg-ink);
 }
 
 .product-showcase__price {
