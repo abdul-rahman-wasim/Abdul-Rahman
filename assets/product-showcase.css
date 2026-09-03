@@ -133,7 +133,6 @@
 
 .product-showcase__info {
   min-width: 0;
-  padding-top: 13px;
 }
 
 .product-showcase__title {
@@ -160,12 +159,13 @@
   line-height: 1.2;
 }
 
-/* NOTE: Figma box is 146x60, so cap at four lines however long the description is */
+/* NOTE: cap at five lines however long the description is */
 .product-showcase__description {
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 5;
   overflow: hidden;
+  min-height: 77px;
   margin: 0;
   font-size: 14px;
   font-weight: 300;
